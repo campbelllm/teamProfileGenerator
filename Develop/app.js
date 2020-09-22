@@ -1,9 +1,12 @@
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+const htmlRenderer = require('./lib/htmlRenderer');
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
+
+const employees = [];
 
 inquirer
   .prompt([
@@ -16,7 +19,7 @@ inquirer
     {
       type: "input",
       message: "What is the Managers id?",
-      name: "managerID",
+      name: "managerId",
     },
     {
       type: "input",
@@ -38,10 +41,12 @@ inquirer
   ])
   .then((answers) => {
     //manager answers
-    const managerName = answers.managerName;
-    const managerID = answers.managerID;
-    const managerEmail = answers.managerEmail;
-    const managerOfficeNumber = answers.managerOfficeNumber;
+    const manager = new Manager (answers.managerName, answers.managerId, answers.managerEmail, answers.managerOfficeNumber)
+    employees.push(manager);
+
+    // const htmlResult = htmlRenderer([manager])
+    // console.log(htmlResult)
+    
     //engineer answers
     let engineerYesNo = answers.engineerYesNo;
     let engineerName = answers.engineerName;
@@ -86,9 +91,14 @@ inquirer
             },
           ])
           .then((answers) => {
+            const intern = new Intern (answers.internName, answers.internId, answers.internEmail, answers.internSchool)
+            employees.push(intern); 
             internYesNo = answers.internYesNo;
             if (internYesNo === "yes") {
               internYes();
+            }else{
+                const htmlResult = htmlRenderer(employees)
+                fs.writeFileSync('finished.html', htmlResult, 'utf-8')
             }
           });
       }
@@ -141,6 +151,8 @@ inquirer
             },
           ])
           .then((answers) => {
+            const engineer = new Engineer (answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGitHub)
+            employees.push(engineer); 
             engineerYesNo = answers.engineerYesNo;
             console.log(engineerYesNo);
             if (engineerYesNo === "yes") {
