@@ -43,22 +43,9 @@ inquirer
     //manager answers
     const manager = new Manager (answers.managerName, answers.managerId, answers.managerEmail, answers.managerOfficeNumber)
     employees.push(manager);
-
-    // const htmlResult = htmlRenderer([manager])
-    // console.log(htmlResult)
-    
-    //engineer answers
     let engineerYesNo = answers.engineerYesNo;
-    let engineerName = answers.engineerName;
-    let engineerID = answers.engineerID;
-    let engineerEmail = answers.engineerEmail;
-    let engineerGitHub = answers.engineerGitHub;
-    //intern answer
-    let internYesNo = answers.internYesNo;
-    let internName = answers.internName;
-    let internID = answers.internID;
-    let internEmail = answers.internEmail;
-    let internSchool = answers.internSchool;
+    
+ 
     const internYes = () => {
       if (internYesNo === "yes") {
         inquirer
@@ -116,7 +103,12 @@ inquirer
         ])
         .then((answers) => {
           internYesNo = answers.internYesNo;
-          internYes();
+          if(internYesNo === 'yes'){
+            internYes()
+          }
+           const htmlResult = htmlRenderer(employees)
+            fs.writeFileSync('finished.html', htmlResult, 'utf-8')
+          
         });
     };
     const engineerYes = () => {
