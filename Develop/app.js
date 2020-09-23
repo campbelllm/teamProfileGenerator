@@ -7,13 +7,16 @@ const path = require("path");
 const fs = require("fs");
 
 const employees = [];
-
- //name validation 
- const nameValidation =  (input) => {
-  if (input === '' ) {
-     return 'Must enter name';
+//text validation
+const textValidation = (input) => {
+  function textIsValid (input) {
+    return /^([a-zA-Z]+\s)*[a-zA-Z]+$/.test(input)
   }
-  return true;
+  const textCheck = textIsValid(input)
+if(!textCheck){
+  return 'You must enter text. Please make sure there are no extra spaces.'
+}
+return true
 };
 
 //email validation
@@ -26,8 +29,19 @@ const emailValidation = (input) => {
     return 'You must enter a valid email.'
   }
   return true
+};
+
+//number input validation
+const numValidation = (input) => {
+  if (isNaN(input)) 
+  {
+    return "Must input numbers";
+  }
+  return true
 }
 
+
+// start of prompts
 inquirer
   .prompt([
     //manager questions
@@ -35,12 +49,13 @@ inquirer
       type: "input",
       message: "Please enter the Managers name:",
       name: "managerName",
-      validate: nameValidation
+      validate: textValidation
     },
     {
       type: "input",
       message: "What is the Managers id?",
       name: "managerId",
+      validate: numValidation
     },
     {
       type: "input",
@@ -52,6 +67,7 @@ inquirer
       type: "input",
       message: "What is the Managers office number?",
       name: "managerOfficeNumber",
+      validate: numValidation
     },
     //engineer question start
     {
@@ -75,12 +91,13 @@ inquirer
                 type: "input",
                 message: "Enter engineer name:",
                 name: "engineerName",
-                validate: nameValidation
+                validate: textValidation
               },
               {
                 type: "input",
                 message: "Enter engineer id:",
                 name: "engineerId",
+                validate: numValidation
               },
               {
                 type: "input",
@@ -92,6 +109,7 @@ inquirer
                 type: "input",
                 message: "Enter engineers GitHub username",
                 name: "engineerGitHub",
+                validate: textValidation
               },
               {
                 type: "list",
@@ -104,7 +122,6 @@ inquirer
               const engineer = new Engineer (answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGitHub)
               employees.push(engineer); 
               engineerYesNo = answers.engineerYesNo;
-              console.log(engineerYesNo);
               //after engineer is done, moving onto another engineer or an intern, depending on input
               if (engineerYesNo === "yes") {
                 engineerYes();
@@ -147,12 +164,13 @@ inquirer
                 type: "input",
                 message: "Enter intern name:",
                 name: "internName",
-                validate: nameValidation
+                validate: textValidation
               },
               {
                 type: "input",
                 message: "Enter intern id:",
                 name: "internId",
+                validate: numValidation
               },
               {
                 type: "input",
@@ -164,6 +182,7 @@ inquirer
                 type: "input",
                 message: "Enter intern school:",
                 name: "internSchool",
+                validate: textValidation
               },
               {
                 type: "list",
