@@ -8,13 +8,25 @@ const fs = require("fs");
 
 const employees = [];
 
- //nameValidation 
+ //name validation 
  const nameValidation =  (input) => {
   if (input === '' ) {
      return 'Must enter name';
   }
   return true;
 };
+
+//email validation
+const emailValidation = (input) => {
+    function emailIsValid (input) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input)
+    }
+    const emailCheck = emailIsValid(input)
+  if(!emailCheck){
+    return 'You must enter a valid email.'
+  }
+  return true
+}
 
 inquirer
   .prompt([
@@ -34,6 +46,7 @@ inquirer
       type: "input",
       message: "What is the Managers email?",
       name: "managerEmail",
+      validate: emailValidation
     },
     {
       type: "input",
@@ -73,6 +86,7 @@ inquirer
                 type: "input",
                 message: "Enter engineer email:",
                 name: "engineerEmail",
+                validate: emailValidation
               },
               {
                 type: "input",
@@ -144,6 +158,7 @@ inquirer
                 type: "input",
                 message: "Enter intern email:",
                 name: "internEmail",
+                validate: emailValidation
               },
               {
                 type: "input",
