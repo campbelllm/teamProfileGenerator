@@ -31,7 +31,7 @@ inquirer
       message: "What is the Managers office number?",
       name: "managerOfficeNumber",
     },
-    //engineer questions
+    //engineer question start
     {
       type: "list",
       message: "Would you like to input an engineer?",
@@ -44,122 +44,127 @@ inquirer
     const manager = new Manager (answers.managerName, answers.managerId, answers.managerEmail, answers.managerOfficeNumber)
     employees.push(manager);
     let engineerYesNo = answers.engineerYesNo;
+    // additionals engineer questions
+    const engineerYes = () => {
+        if (engineerYesNo === "yes") {
+          inquirer
+            .prompt([
+              {
+                type: "input",
+                message: "Enter engineer name:",
+                name: "engineerName",
+              },
+              {
+                type: "input",
+                message: "Enter engineer id:",
+                name: "engineerId",
+              },
+              {
+                type: "input",
+                message: "Enter engineer email:",
+                name: "engineerEmail",
+              },
+              {
+                type: "input",
+                message: "Enter engineers GitHub username",
+                name: "engineerGitHub",
+              },
+              {
+                type: "list",
+                message: "Would you like to input another engineer?",
+                choices: ["yes", "no"],
+                name: "engineerYesNo",
+              },
+            ])
+            .then((answers) => {
+              const engineer = new Engineer (answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGitHub)
+              employees.push(engineer); 
+              engineerYesNo = answers.engineerYesNo;
+              console.log(engineerYesNo);
+              //after engineer is done, moving onto another engineer or an intern, depending on input
+              if (engineerYesNo === "yes") {
+                engineerYes();
+              } else {
+                internPrompt();
+              }
+            });
+        } else {
+          internPrompt();
+        }
+      };
     
- 
-    const internYes = () => {
-      if (internYesNo === "yes") {
+      // intern initial question
+      const internPrompt = () => {
         inquirer
           .prompt([
             {
-              type: "input",
-              message: "Enter intern name:",
-              name: "internName",
-            },
-            {
-              type: "input",
-              message: "Enter intern id:",
-              name: "internId",
-            },
-            {
-              type: "input",
-              message: "Enter intern email:",
-              name: "internEmail",
-            },
-            {
-              type: "input",
-              message: "Enter intern school:",
-              name: "internSchool",
-            },
-            {
               type: "list",
-              message: "Would you like to input another intern?",
+              message: "Would you like to input an intern?",
               choices: ["yes", "no"],
               name: "internYesNo",
             },
           ])
           .then((answers) => {
-            const intern = new Intern (answers.internName, answers.internId, answers.internEmail, answers.internSchool)
-            employees.push(intern); 
             internYesNo = answers.internYesNo;
-            if (internYesNo === "yes") {
-              internYes();
-            }else{
-                const htmlResult = htmlRenderer(employees)
-                fs.writeFileSync('finished.html', htmlResult, 'utf-8')
+            if(internYesNo === 'yes'){
+              internYes()
             }
+             const htmlResult = htmlRenderer(employees)
+              fs.writeFileSync('finished.html', htmlResult, 'utf-8')
+            
           });
-      }
-    };
-
-    const internPrompt = () => {
-      inquirer
-        .prompt([
-          {
-            type: "list",
-            message: "Would you like to input an intern?",
-            choices: ["yes", "no"],
-            name: "internYesNo",
-          },
-        ])
-        .then((answers) => {
-          internYesNo = answers.internYesNo;
-          if(internYesNo === 'yes'){
-            internYes()
-          }
-           const htmlResult = htmlRenderer(employees)
-            fs.writeFileSync('finished.html', htmlResult, 'utf-8')
-          
-        });
-    };
-    const engineerYes = () => {
-      if (engineerYesNo === "yes") {
-        inquirer
-          .prompt([
-            {
-              type: "input",
-              message: "Enter engineer name:",
-              name: "engineerName",
-            },
-            {
-              type: "input",
-              message: "Enter engineer id:",
-              name: "engineerId",
-            },
-            {
-              type: "input",
-              message: "Enter engineer email:",
-              name: "engineerEmail",
-            },
-            {
-              type: "input",
-              message: "Enter engineers GitHub username",
-              name: "engineerGitHub",
-            },
-            {
-              type: "list",
-              message: "Would you like to input another engineer?",
-              choices: ["yes", "no"],
-              name: "engineerYesNo",
-            },
-          ])
-          .then((answers) => {
-            const engineer = new Engineer (answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGitHub)
-            employees.push(engineer); 
-            engineerYesNo = answers.engineerYesNo;
-            console.log(engineerYesNo);
-            if (engineerYesNo === "yes") {
-              engineerYes();
-            } else {
-              internPrompt();
-            }
-          });
-      } else {
-        internPrompt();
-      }
-    };
+      };
+      //additional intern questions
+      const internYes = () => {
+        if (internYesNo === "yes") {
+          inquirer
+            .prompt([
+              {
+                type: "input",
+                message: "Enter intern name:",
+                name: "internName",
+              },
+              {
+                type: "input",
+                message: "Enter intern id:",
+                name: "internId",
+              },
+              {
+                type: "input",
+                message: "Enter intern email:",
+                name: "internEmail",
+              },
+              {
+                type: "input",
+                message: "Enter intern school:",
+                name: "internSchool",
+              },
+              {
+                type: "list",
+                message: "Would you like to input another intern?",
+                choices: ["yes", "no"],
+                name: "internYesNo",
+              },
+            ])
+            .then((answers) => {
+              const intern = new Intern (answers.internName, answers.internId, answers.internEmail, answers.internSchool)
+              employees.push(intern); 
+              internYesNo = answers.internYesNo;
+              if (internYesNo === "yes") {
+                internYes();
+              }else{
+                  const htmlResult = htmlRenderer(employees)
+                  fs.writeFileSync('finished.html', htmlResult, 'utf-8')
+              }
+            });
+        }
+      };
+    
     engineerYes();
   });
 
+  //validation 
+  
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
