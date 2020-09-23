@@ -8,6 +8,14 @@ const fs = require("fs");
 
 const employees = [];
 
+ //nameValidation 
+ const nameValidation =  (input) => {
+  if (input === '' ) {
+     return 'Must enter name';
+  }
+  return true;
+};
+
 inquirer
   .prompt([
     //manager questions
@@ -15,6 +23,7 @@ inquirer
       type: "input",
       message: "Please enter the Managers name:",
       name: "managerName",
+      validate: nameValidation
     },
     {
       type: "input",
@@ -53,6 +62,7 @@ inquirer
                 type: "input",
                 message: "Enter engineer name:",
                 name: "engineerName",
+                validate: nameValidation
               },
               {
                 type: "input",
@@ -123,6 +133,7 @@ inquirer
                 type: "input",
                 message: "Enter intern name:",
                 name: "internName",
+                validate: nameValidation
               },
               {
                 type: "input",
@@ -163,8 +174,7 @@ inquirer
     engineerYes();
   });
 
-  //validation 
-  
+ 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
