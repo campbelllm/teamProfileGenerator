@@ -151,8 +151,7 @@ inquirer
               internYes()
             }
              const htmlResult = htmlRenderer(employees)
-              fs.writeFileSync('finished.html', htmlResult, 'utf-8')
-            
+              fs.writeFileSync('./final/finished.html', htmlResult, 'utf-8')
           });
       };
       //additional intern questions
@@ -199,7 +198,8 @@ inquirer
                 internYes();
               }else{
                   const htmlResult = htmlRenderer(employees)
-                  fs.writeFileSync('finished.html', htmlResult, 'utf-8')
+                  fs.writeFileSync('./final/finished.html', htmlResult, 'utf-8')
+                 
               }
             });
         }
