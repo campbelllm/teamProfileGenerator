@@ -12,5 +12,5 @@ https://github.com/campbelllm/teamProfileGenerator
 
 ## Team Profile Preview
 
-![Example Gif](ezgif.com-video-to-gif.gif)
+![Example Gif](teamProfileEx.gif)
 
